@@ -148,7 +148,7 @@ legend(
 )
 
 suffix <- (Sys.Date()-days(1)) |> format("%Y.%m.%d") |> as.character()
-dev.print(png, paste0("output/validacion_plots/observ_prediccion", suffix, ".png"), width = 3024, height = 1964, res = 400)
+dev.print(png, paste0("output/validacion_plots/observ_prediccion.png"), width = 3024, height = 1964, res = 400)
 dev.off()
 
 
