@@ -126,25 +126,25 @@ plot <- panel |>
   arrange(`year(fecha)`, `month(fecha)`) |> 
   mutate(fecha=as.Date(paste(`year(fecha)`, `month(fecha)`, "01", sep="-")))
 
-par(bg="white", mar=c(3.5,5.5,0,0), family="Montserrat", ann=F)
+par(bg=NA, mar=c(3.5,5.5,0,0), family="Montserrat", ann=F)
 
-plot(plot$fecha, plot$recaudacion, t="l", lwd=4, col="#611232")
-lines(plot$fecha, plot$recaudacion_aj, t="l", lwd=4, col="#235b4e")
+plot(plot$fecha, plot$recaudacion, t="l", lwd=4, col="#ADD8E6")
+lines(plot$fecha, plot$recaudacion_aj, t="l", lwd=4, col="#FFD580")
 
-abline(v=which(plot$`year(fecha)`==2023 & plot$`month(fecha)`==1), col="#bc955c", lwd=4, lty="dashed")
-abline(v=which(plot$`year(fecha)`==2024 & plot$`month(fecha)`==9), col="#bc955c", lwd=4, lty="dashed")
+abline(v=which(plot$`year(fecha)`==2023 & plot$`month(fecha)`==1), col="#90EE90", lwd=4, lty="dashed")
+abline(v=which(plot$`year(fecha)`==2024 & plot$`month(fecha)`==9), col="#90EE90", lwd=4, lty="dashed")
 
 legend(
   "topleft",
   legend=c("Ajustada", "Observada"),
-  col=c("#002f2a","#611232"),
+  col=c("#FFD580","#ADD8E6"),
   bty="n",
   lwd=4,
   cex=1.2
 )
 
 suffix <- (Sys.Date()-days(1)) |> format("%Y.%m.%d") |> as.character()
-dev.print(png, paste0("output/validacion_plots/observ_prediccion_", suffix, ".png"), width = 3024, height = 1964, res = 400)
+dev.print(png, paste0("output/validacion_plots/observ_prediccion", suffix, ".png"), width = 3024, height = 1964, res = 400)
 dev.off()
 
 
