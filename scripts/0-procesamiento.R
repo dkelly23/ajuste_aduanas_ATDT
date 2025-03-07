@@ -33,6 +33,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     
   } else if (ajuste=="real") {
     # Ajustamos por INPC
+    inpc_base <- inpc_df$inpc |> tail(1)
+    
     panel_def <- panel_rec_aduanas |> 
       mutate(
         mes=month(fecha),
@@ -43,9 +45,9 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     panel_def[["inpc"]] <- na.locf(panel_def[["inpc"]], na.rm = FALSE)
     
     panel_def <- panel_def |> 
-      mutate(inpc=1/(inpc/100)) |> 
+      mutate(inpc=(inpc/inpc_base)) |> 
       mutate(
-        recaudacion=recaudacion*inpc
+        recaudacion=recaudacion*(1/inpc)
       ) |> 
       select(-c(inpc, mes, year))
     
@@ -55,22 +57,6 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
   } else if (ajuste=="tdc") {
     
     load("input/panel_def.RData")
-    
-    panel_def <- panel_def |> 
-      mutate(
-        mes=month(fecha),
-        year=year(fecha)
-      ) |> left_join(inpc_df |> mutate(mes=month(fecha), year=year(fecha)) |> select(-fecha)) 
-    
-    panel_def[["inpc"]] <- na.locf(panel_def[["inpc"]], na.rm = FALSE)
-    panel_def[["inpc"]] <- na.locf(panel_def[["inpc"]], na.rm = FALSE)
-    
-    panel_def <- panel_def |> 
-      mutate(inpc=1/(inpc/100)) |> 
-      mutate(
-        recaudacion=recaudacion*inpc
-      ) |> 
-      select(-c(inpc, mes, year))
     
     # Renombrar
     panel_rec_aduanas <- panel_def

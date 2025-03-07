@@ -16,7 +16,7 @@
 # PREAMBULO ____________________________________________________________________
 
 # librerias
-pacman::p_load(tidyverse, readxl, showtext, janitor, fixest, lubridate)
+pacman::p_load(tidyverse, readxl, showtext, janitor, fixest, lubridate, stargazer, lmtest)
 
 # idioma
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
@@ -171,7 +171,7 @@ for (imp in panel_vf$impuesto |> unique()) {
 }
 
 modelo_IVA |> summary()
-
+stargazer(lmtest::coeftest(modelo_IVA))
 
 ## Extracción de Coeficientes --------------------------------------------------
 e_tdc <- modelo_IVA$coefficients[1] |> as.numeric()
