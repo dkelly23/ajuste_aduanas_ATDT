@@ -18,7 +18,7 @@ En consecuencia, nos interesa conocer el **nivel de respuesta** de la recaudacio
 
 ### Estimaciones de Elasticidades
 
-Utilizando cifras desestacionalizadas para el caso del IGAE y el Volumen de Importaciones, y reales para el Tipo de Cambio, modelamos las variaciones porcentuales en la recaudación contemporanea por Impuesto como una función lineal de las variaciones porcentuales en el IGAE, el Volumen de Importaciones y el Tipo de Cambio:
+Utilizando cifras desestacionalizadas para el caso del IGAE y el Volumen de Importaciones, y cifras reales para el Tipo de Cambio, modelamos las variaciones porcentuales en la recaudación contemporanea por Impuesto como una función lineal de las variaciones porcentuales en el IGAE, el Volumen de Importaciones y el Tipo de Cambio:
 
 $$\Delta\log(rec_{i,t}) = \alpha_i + \gamma_{TDC} \Delta\log(TDC_{t}) + \gamma_{IGAE} \Delta\log(IGAE_t) + \beta vol_{i,t} + \varepsilon_{i,t} $$
 
