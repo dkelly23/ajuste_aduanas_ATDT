@@ -15,8 +15,6 @@ En consecuencia, nos interesa conocer el **nivel de respuesta** de la recaudacio
 3. Estimamos variaciones porcentuales con respecto a un periodo base (mismo día del año anterior) para la serie de IGAE y TDC. Después utilizamos la elasticidad calculada anteriormente para estimar el efecto de dichas variaciones en la recaudacion.
 4. Restamos la magnitud del efecto a las cifras contemporaneas, de modo que son directamente comparables. La diferencia entre la recaudacion nominal y la recaudacion ajustada por dicha diferencia corresponde al esfuerzo recaudatorio.
 
-A continuacion describimos con más detalle este procedimiento.
-
 
 ### Estimaciones de Elasticidades
 
