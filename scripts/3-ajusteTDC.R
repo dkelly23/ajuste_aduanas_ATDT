@@ -126,21 +126,25 @@ plot <- panel |>
   arrange(`year(fecha)`, `month(fecha)`) |> 
   mutate(fecha=as.Date(paste(`year(fecha)`, `month(fecha)`, "01", sep="-")))
 
-par(bg=NA, mar=c(3.5,5.5,0,0), family="Montserrat", ann=F)
+par(bg=NA, mar=c(2,2,0,0), family="Montserrat", ann=F)
 
-plot(plot$fecha, plot$recaudacion, t="l", lwd=4, col="#ADD8E6")
-lines(plot$fecha, plot$recaudacion_aj, t="l", lwd=4, col="#FFD580")
+plot(as.Date(plot$fecha), plot$recaudacion, type = "l", lwd = 4, col = "#ADD8E6", axes = FALSE)
+lines(as.Date(plot$fecha), plot$recaudacion_aj, t="l", lwd=4, col="#FFD580")
 
-abline(v=which(plot$`year(fecha)`==2023 & plot$`month(fecha)`==1), col="#90EE90", lwd=4, lty="dashed")
-abline(v=which(plot$`year(fecha)`==2024 & plot$`month(fecha)`==9), col="#90EE90", lwd=4, lty="dashed")
+axis(1, col.axis = "white", col="white", at=seq(as.Date("2022-01-01"), as.Date("2025-02-01"), by="year"), labels = seq(as.Date("2022-01-01"), as.Date("2025-02-01"), by="year") |> format("%Y"))
+axis(2, col.axis = "white", col="white")
+box(col = "white")
+
+abline(v="2025-01-01" |> as.Date(), col="#90EE90", lwd=2, lty="dashed")
 
 legend(
-  "topleft",
-  legend=c("Ajustada", "Observada"),
-  col=c("#FFD580","#ADD8E6"),
-  bty="n",
-  lwd=4,
-  cex=1.2
+  "top",
+  legend = c("Ajustada", "Observada"),
+  col = c("#FFD580", "#ADD8E6"),
+  bty = "n",
+  lwd = 4,
+  cex = 1.2,
+  text.col = "white"
 )
 
 suffix <- (Sys.Date()-days(1)) |> format("%Y.%m.%d") |> as.character()
