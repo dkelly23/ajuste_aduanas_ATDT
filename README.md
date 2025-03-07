@@ -27,3 +27,4 @@ $$\Delta\log(rec_{i,t}) = \alpha_i + \gamma_{TDC} \Delta\log(TDC_{t}) + \gamma_{
 Dado el planteamiento del modelo, los coeficientes $\gamma_{TDC}$ y $\gamma_{IGAE}$ pueden interpretarse como las elasticidades (respuestas porcentuales) de la recaudacion con respecto al Tipo de Cambio y el Indice Global de Actividad Económica. En este modelo $\alpha_i$ corresponde a un efecto fijo por aduana, que permite la estimacion de distintos interceptos para cada una de las aduanas. Los resultados de este modelo se presentan a continuacion.
 
 ![Alt text](output/validacion_plots/resultados.png)
+<img src="output/validacion_plots/resultados.png" alt="Alt text" width="300">
