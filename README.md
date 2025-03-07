@@ -39,7 +39,7 @@ $$ajuste_{i,t} = (\gamma_{TDC} \cdot \Delta TDC + \gamma_{IGAE} \cdot \Delta IGA
 
 Nótese que $\gamma_{TDC}\neq 0$ solo para IVA e IGI. Posteriormente, generamos la recaudación ajustada restando $ajuste_{i,t}$ a la recaudacion deflactada:
 
-$$rec_aj_{i,t} = rec_{i,t} - ajuste_{i,t}$$
+$$rec\_aj_{i,t} = rec_{i,t} - ajuste_{i,t}$$
 
 <div align="center">
 <img src="output/validacion_plots/observ_prediccion.png" alt="Alt text" width="60%" style="text-align: center">
