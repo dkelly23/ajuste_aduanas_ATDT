@@ -39,7 +39,9 @@ $$ajuste_{i,t} = (\gamma_{TDC} \cdot \Delta TDC + \gamma_{IGAE} \cdot \Delta IGA
 
 Nótese que $\gamma_{TDC}\neq 0$ solo para IVA e IGI. Posteriormente, generamos la recaudación ajustada restando $ajuste_{i,t}$ a la recaudacion deflactada:
 
-$$rec-aj_{i,t} = rec_{i,t} - ajuste_{i,t}$$
+$$recaj_{i,t} = rec_{i,t} - ajuste_{i,t}$$
+
+Cómo se mencionaba anteriormente, la diferencia entre periodos de la recaudacion real y la recaudacion ajustada corresponde al esfuerzo fiscal. Finalmente, presentamos una visualizacion gráfica de estas diferencias para el conjunto de IVA y IGI.
 
 <div align="center">
 <img src="output/validacion_plots/observ_prediccion.png" alt="Alt text" width="60%" style="text-align: center">
