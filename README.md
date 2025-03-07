@@ -31,7 +31,7 @@ Dado el planteamiento del modelo, los coeficientes $\gamma_{TDC}$ y $\gamma_{IGA
 </div>
 
 <div align="center">
-<img src="output/validacion_plots/observ_prediccion" alt="Alt text" width="60%" style="text-align: center">
+<img src="output/validacion_plots/observ_prediccion.png" alt="Alt text" width="60%" style="text-align: center">
 </div>
 
 
