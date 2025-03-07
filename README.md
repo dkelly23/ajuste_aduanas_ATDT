@@ -35,7 +35,7 @@ Dado el planteamiento del modelo, los coeficientes $\gamma_{TDC}$ y $\gamma_{IGA
 
 Utilizando las elasticidades estimadas anteriormente, corregimos la recaudación por impuesto estimando cambios porcentuales del INPC y el IGAE. El monto del ajuste depende del tipo de impuesto. Aquellos que dependen del valor (IVA e IGI) se corrigen por IGAE y TDC, mientras que el resto reciben solo la correción por IGAE. El monto del ajuste es igual a:
 
-$$ajuste_{i,t}=1-(\gamma_TDC + \gamma_{IGAE})$$
+$$ajuste_{i,t}=(\gamma_{TDC} \cdot \Delta\% TDC + \gamma_{IGAE} \cdot \Delta\% IGAE) \times rec_{i,t}$$
 
 <div align="center">
 <img src="output/validacion_plots/observ_prediccion.png" alt="Alt text" width="60%" style="text-align: center">
