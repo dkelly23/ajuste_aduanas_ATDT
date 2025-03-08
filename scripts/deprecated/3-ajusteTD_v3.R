@@ -14,28 +14,11 @@
 
 # PREAMBULO ____________________________________________________________________
 
-#setwd("")
-
-# rm( list=ls() )
-#.rs.restartR()
-
 # librerias
 pacman::p_load(tidyverse, readxl, showtext, janitor, fixest, zoo)
 
-# idioma
-Sys.setlocale("LC_ALL", "es_ES.UTF-8")
-Sys.setenv(LANG = "es_MX.UTF-8")
-
 # utilidades
-# font_add_google("Montserrat")
-# showtext_auto() 
 options(scipen = 999)
-
-# opciones
-#create_project_folders()
-#file.edit("~/.Rprofile")
-#file.edit("/Users/danielkelly/.config/rstudio/templates/default.R")
-
 
 # CÓDIGO _______________________________________________________________________
 
@@ -52,8 +35,7 @@ tdc <- read_xlsx("input/tdc.xlsx") |>
   mutate(
     tdc=ifelse(tdc=="N/E", NA, tdc) |> as.numeric(),
     fecha=as.Date(fecha, format="%d/%m/%Y") |> format.Date("%Y-%m-%d") |> as.Date()
-  ) |> 
-  filter(year(fecha)>=2022)
+  )
 
 load("input/panel_aduanas.RData")
 load("input/coef.RData")
@@ -61,29 +43,24 @@ load("input/coef.RData")
 
 # Script -----------------------------------------------------------------------
 
-# Tipo de cambio promedio por mes
-tdc_mes <- tdc |> 
-  mutate(fecha=floor_date(fecha, unit="month")) |> 
-  group_by(fecha) |> 
-  summarise(tdc=mean(tdc, na.rm=TRUE))
+# Lag IGAE
+igae_lag <- igae |> 
+  mutate(fecha=fecha+years(1)) |> 
+  filter(year(fecha)>=2025) |> 
+  rename(igae_lag=igae)
 
 # Dataframe para estimaciones
 df <- data.frame(fecha=seq(as.Date("2022-01-01"), as.Date("2025-03-01"), by="month")) |> 
-  left_join(igae) |> left_join(inpc) |> left_join(tdc_mes) |> 
+  left_join(igae) |> left_join(inpc) |> left_join(igae_lag) |> 
   mutate(
     mes=month(fecha),
     year=year(fecha)
   ) 
 
 # Asignar valores vacíos
-for (v in c("igae", "inpc", "tdc")) {
-  df[[v]] <- na.locf(df[[v]], na.rm = FALSE)
+for (v in c("igae", "inpc")) {
   df[[v]] <- na.locf(df[[v]], na.rm = FALSE)
 }
-
-# Diferencias en TDC
-tdc_base <- tdc_mes$tdc |> tail(1)
-df <- df |> mutate(changes_tdc=log(tdc)-log(tdc_base))
 
 # Diferencias en IGAE
 igae_base <- igae$igae |> tail(1)
@@ -92,6 +69,9 @@ df <- df |> mutate(changes_igae=(log(igae)-log(igae_base)))
 # Diferencias en INPC
 inpc_base <- inpc$inpc |> tail(1)
 df <- df |>  mutate(changes_inpc=log(inpc)-log(inpc_base))
+
+# Diferencias en IGAE_LAG
+df <- df |> mutate(changes_igae_lag=log(igae)-log(igae_lag))
 
 # Eliminar fecha para evitar conflictos en el join
 df <- df |> select(-fecha)
@@ -105,7 +85,7 @@ panel_rec_aduanas <- panel_rec_aduanas |>
   ) |> left_join(inpc |> mutate(mes=month(fecha), year=year(fecha)) |> select(-fecha)) 
 
 panel_rec_aduanas[["inpc"]] <- na.locf(panel_rec_aduanas[["inpc"]], na.rm = FALSE)
-panel_rec_aduanas[["inpc"]] <- na.locf(panel_rec_aduanas[["inpc"]], na.rm = FALSE)
+panel_rec_aduanas[["inpc"]] <- na.locf(panel_rec_aduanas[["inpc"]], na.rm = FALSE, fromLast = TRUE)
 
 panel_rec_aduanas <- panel_rec_aduanas |> 
   mutate(inpc=(inpc/inpc_base)) |> 
@@ -115,21 +95,44 @@ panel_rec_aduanas <- panel_rec_aduanas |>
   select(-c(inpc, mes, year))
 
 
-## Dataframe final -------------------------------------------------------------
 # Unir al panel final 
 panel <- panel_rec_aduanas |>
   mutate(mes=month(fecha), year=year(fecha)) |>
   left_join(df) |> 
   select(-c(mes, year))
 
+
+## Lag del Tipo de Cambio ------------------------------------------------------
+
+# Unir tipo de cambio
+panel <- panel |> left_join(tdc)
+panel[["tdc"]] <- na.locf(panel[["tdc"]], na.rm = FALSE)
+panel[["tdc"]] <- na.locf(panel[["tdc"]], na.rm = FALSE, fromLast = TRUE)
+
+# Lag del tipo de cambio
+tdc_lag <- tdc |> 
+  mutate(fecha=fecha+years(1)) |> 
+  rename(tdc_lag=tdc) |> 
+  filter(year(fecha)>=2025)
+
+# Unir lag del tipo de cambio
+panel <- panel |> left_join(tdc_lag)
+panel[["tdc_lag"]] <- na.locf(panel[["tdc_lag"]], na.rm = FALSE)
+
+# Cambios en lag_tipo de cambio
+panel <- panel |> mutate(changes_tdc_lag = ifelse(is.na(tdc_lag), 0, log(tdc) - log(tdc_lag)))
+
+## Dataframe final -------------------------------------------------------------
 panel_IVA <- panel |> 
-  filter(impuesto=="IVA") |> 
-  mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
+  filter(impuesto=="IVA" | impuesto=="ADVALOREM") |> 
+  # mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
+  mutate(ajuste=(changes_tdc_lag*coeff[1])+(changes_igae_lag*coeff[2])) |>
   mutate(rec_aj=recaudacion*(1-ajuste)) 
 
 panel_no_IVA <- panel |> 
-  filter(impuesto!="IVA") |> 
-  mutate(ajuste=(changes_igae*coeff[2])) |>
+  filter(impuesto!="IVA" & impuesto!="ADVALOREM") |> 
+  # mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
+  mutate(ajuste=(changes_igae_lag*coeff[2])) |>
   mutate(rec_aj=recaudacion*(1-ajuste)) 
 
 panel <- bind_rows(panel_IVA, panel_no_IVA) |> 

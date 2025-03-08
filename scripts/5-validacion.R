@@ -52,11 +52,23 @@ y2
 "tdc"
 y3
 
-# tabla_impuestos_tdc[4,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_tdc_total.csv")
-# tabla_impuestos_real[4,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_real_total.csv")
-# tabla_impuestos[4,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_nominal_total.csv")
-# 
-# tabla_impuestos_tdc[2,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_tdc_IVA.csv")
-# tabla_impuestos_real[2,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_real_IVA.csv")
-# tabla_impuestos[2,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_nominal_IVA.csv")
-# 
+par(mar=c(2,2,1,1))
+plot(y3, t="l", lwd=2, col="#235b4e")
+
+
+# Comparar recaudacion por semana
+df_real <- tabla_impuestos_real[4,] |> pull(lista_sem) |> fromJSON()
+df_tdc <- tabla_impuestos_tdc[4,] |> pull(lista_sem) |> fromJSON()
+df_nominal <- tabla_impuestos[4,] |> pull(lista_sem) |> fromJSON()
+
+plot_24 <- df_real |> 
+  filter(year(fecha)==2024) |> 
+  mutate(n=1:n())
+
+plot_25 <- df_real |> 
+  filter(year(fecha)==2025) |> 
+  mutate(n=1:n())
+
+par(mar=c(2,2,1,1))
+plot(plot_24$n, plot_24$recaudacion, t="l", col="#235b4e", lwd=2)
+lines(plot_25$n, plot_25$recaudacion, t="l", col="#9f2241", lwd=2)
