@@ -124,12 +124,16 @@ panel <- panel_rec_aduanas |>
 
 panel_IVA <- panel |> 
   filter(impuesto=="IVA") |> 
-  mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |> 
+  # mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
+  # mutate(ajuste=(changes_tdc+changes_igae)) |>
+  mutate(ajuste=(changes_tdc*0.8385+changes_igae*0.7471)) |>
   mutate(rec_aj=recaudacion*(1-ajuste)) 
 
 panel_no_IVA <- panel |> 
   filter(impuesto!="IVA") |> 
-  mutate(ajuste=(changes_igae*coeff[2])) |> 
+  # mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
+  # mutate(ajuste=(changes_igae)) |>
+  mutate(ajuste=(changes_igae*0.7471)) |>
   mutate(rec_aj=recaudacion*(1-ajuste)) 
 
 panel <- bind_rows(panel_IVA, panel_no_IVA) |> 

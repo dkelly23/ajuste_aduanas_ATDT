@@ -1552,6 +1552,7 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
   
   tabla_institucion <- tabla_institucion %>% left_join(lista_dia) %>% left_join(lista_sem) %>% left_join(lista_mes) %>% left_join(lista_ano)
   
+  # ME QUIERO MATAR
   
   ## Guardar ---------------------------------------------------------------------
   

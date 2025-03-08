@@ -33,9 +33,9 @@ load('output/real/bases_primera_parte_real.Rdata')
 
 # Script -----------------------------------------------------------------------
 
-df_real <- tabla_impuestos_real[2,] |> pull(lista_acum_sem) |> fromJSON()
-df_tdc <- tabla_impuestos_tdc[2,] |> pull(lista_acum_sem) |> fromJSON()
-df_nominal <- tabla_impuestos[2,] |> pull(lista_acum_sem) |> fromJSON()
+df_real <- tabla_impuestos_real[4,] |> pull(lista_acum_sem) |> fromJSON()
+df_tdc <- tabla_impuestos_tdc[4,] |> pull(lista_acum_sem) |> fromJSON()
+df_nominal <- tabla_impuestos[4,] |> pull(lista_acum_sem) |> fromJSON()
 
 x <- 1:8
 y1 <- df_nominal$dif_rec
@@ -51,3 +51,13 @@ y2
 
 "tdc"
 y3
+
+# tabla_impuestos_tdc[4,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_tdc_total.csv")
+# tabla_impuestos_real[4,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_real_total.csv")
+# tabla_impuestos[4,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_nominal_total.csv")
+# 
+# tabla_impuestos_tdc[2,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_tdc_IVA.csv")
+# tabla_impuestos_real[2,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_real_IVA.csv")
+# tabla_impuestos[2,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_nominal_IVA.csv")
+# 
+tabla_impuestos_tdc |> select(impuesto, acum_25, acum_24, dif_24) |> view()
