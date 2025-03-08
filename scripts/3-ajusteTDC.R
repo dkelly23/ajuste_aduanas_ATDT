@@ -124,16 +124,12 @@ panel <- panel_rec_aduanas |>
 
 panel_IVA <- panel |> 
   filter(impuesto=="IVA") |> 
-  # mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
-  # mutate(ajuste=(changes_tdc+changes_igae)) |>
-  mutate(ajuste=(changes_tdc*0.8385+changes_igae*0.7471)) |>
+  mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
   mutate(rec_aj=recaudacion*(1-ajuste)) 
 
 panel_no_IVA <- panel |> 
   filter(impuesto!="IVA") |> 
-  # mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
-  # mutate(ajuste=(changes_igae)) |>
-  mutate(ajuste=(changes_igae*0.7471)) |>
+  mutate(ajuste=(changes_tdc*coeff[1]+changes_igae*coeff[2])) |>
   mutate(rec_aj=recaudacion*(1-ajuste)) 
 
 panel <- bind_rows(panel_IVA, panel_no_IVA) |> 
@@ -179,7 +175,6 @@ suffix <- (Sys.Date()-days(1)) |> format("%Y%m%d") |> as.character()
 dev.print(png, paste0("output/validacion_plots/observ_prediccion.png"), width = 3024, height = 1964, res = 400)
 dev.off()
 
-
 panel_def <- panel |> 
   select(fecha:impuesto, rec_aj) |> 
   rename(recaudacion=rec_aj)
@@ -187,3 +182,4 @@ panel_def <- panel |>
 
 # GUARDAR ----------------------------------------------------------------------
 save(panel_def, file="input/panel_def.RData")
+# temp <- left_join(panel_rec_aduanas, panel_def, by=c("fecha", "cta", "aduana", "institucion", "impuesto"), suffix=c("_nominal", "_tdc"))

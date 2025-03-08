@@ -60,4 +60,3 @@ y3
 # tabla_impuestos_real[2,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_real_IVA.csv")
 # tabla_impuestos[2,] |> pull(lista_acum_sem) |> fromJSON() |> write_csv(file="output/serie_nominal_IVA.csv")
 # 
-tabla_impuestos_tdc |> select(impuesto, acum_25, acum_24, dif_24) |> view()

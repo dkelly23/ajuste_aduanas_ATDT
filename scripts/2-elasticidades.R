@@ -164,14 +164,13 @@ for (imp in panel_vf$impuesto |> unique()) {
     paste0("modelo_", imp),
     feols(
       data=panel_vf |> filter(impuesto==imp),
-      fml=as.formula("recaudacion ~ tdc + igae + volumen | aduana"),
+      fml=as.formula("recaudacion ~ tdc + igae + volumen + cpi | aduana"),
       vcov="hetero"
     )
   )
 }
 
 modelo_IVA |> summary()
-stargazer(lmtest::coeftest(modelo_IVA))
 
 ## Extracción de Coeficientes --------------------------------------------------
 e_tdc <- modelo_IVA$coefficients[1] |> as.numeric()
@@ -179,6 +178,12 @@ e_igae <- modelo_IVA$coefficients[2] |> as.numeric()
 
 coeff <- c(e_tdc, e_igae)
 
-# rm(list=setdiff(ls(), "coeff"))
-
 save(coeff, file="input/coef.RData")
+
+par(ann=TRUE, mar=c(4,4,0,0))
+plot(modelo_IVA$residuals, (panel_vf |> filter(impuesto=="IVA"))$recaudacion, pch=16, cex=0.8,
+     xlab="Residuos", ylab="Valores Observados", xlim=c(-10,10), ylim=c(-10,10))
+
+dev.print(png, paste0("output/validacion_plots/residuos.png"), width = 1964, height = 1964, res = 400)
+
+plot(density(modelo_IVA$residuals, freq=TRUE), xlim=c(-1,1))
