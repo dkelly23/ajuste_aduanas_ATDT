@@ -57,7 +57,9 @@ tabla_impuestos <- tabla_impuestos %>% select(impuesto, rec_mes_25, rec_m24, pd_
 tabla_institucion <- tabla_institucion %>% select(institucion, impuesto, rec_mes_25, rec_m24, pd_lw, pd_sem_22, dif_lw, dif_tm, dif_s22, var_tm, 
                                                   var_24, var_22, acum_25, acum_24, acum_22, dif_24, dif_22, var_acum_24, var_acum_22, 
                                                   p_sugerido, prom_25_uf, prom_24_uf, max_p_22, lista_acum_dia, lista_acum_sem, lista_acum_mes, 
-                                                  lista_dia, lista_sem, lista_mes, lista_ano)
+                                                  lista_dia, lista_sem, lista_mes, lista_ano) |> 
+  filter(!is.na(institucion))
+
 
 tabla_aduanas <- tabla_aduanas %>% select(aduana, institucion, impuesto, rec_mes_25, rec_m24, pd_lw, pd_sem_22, dif_lw, dif_tm, dif_s22, var_tm, 
                                           var_24, var_22, acum_25, acum_24, acum_22, dif_24, dif_22, var_acum_24, var_acum_22, 
@@ -96,7 +98,9 @@ tabla_impuestos_real <- tabla_impuestos_real %>% select(impuesto, rec_mes_25, re
 tabla_institucion_real <- tabla_institucion_real %>% select(institucion, impuesto, rec_mes_25, rec_m24, pd_lw, pd_sem_22, dif_lw, dif_tm, dif_s22, var_tm, 
                                                             var_24, var_22, acum_25, acum_24, acum_22, dif_24, dif_22, var_acum_24, var_acum_22, 
                                                             p_sugerido, prom_25_uf, prom_24_uf, max_p_22, lista_acum_dia, lista_acum_sem, lista_acum_mes, 
-                                                            lista_dia, lista_sem, lista_mes, lista_ano)
+                                                            lista_dia, lista_sem, lista_mes, lista_ano) |> 
+  filter(!is.na(institucion))
+
 
 tabla_aduanas_real <- tabla_aduanas_real %>% select(aduana, institucion, impuesto, rec_mes_25, rec_m24, pd_lw, pd_sem_22, dif_lw, dif_tm, dif_s22, var_tm, 
                                                     var_24, var_22, acum_25, acum_24, acum_22, dif_24, dif_22, var_acum_24, var_acum_22, 
@@ -135,7 +139,8 @@ tabla_impuestos_tdc <- tabla_impuestos_tdc %>% select(impuesto, rec_mes_25, rec_
 tabla_institucion_tdc <- tabla_institucion_tdc %>% select(institucion, impuesto, rec_mes_25, rec_m24, pd_lw, pd_sem_22, dif_lw, dif_tm, dif_s22, var_tm, 
                                                           var_24, var_22, acum_25, acum_24, acum_22, dif_24, dif_22, var_acum_24, var_acum_22, 
                                                           p_sugerido, prom_25_uf, prom_24_uf, max_p_22, lista_acum_dia, lista_acum_sem, lista_acum_mes, 
-                                                          lista_dia, lista_sem, lista_mes, lista_ano)
+                                                          lista_dia, lista_sem, lista_mes, lista_ano) |> 
+  filter(!is.na(institucion))
 
 tabla_aduanas_tdc <- tabla_aduanas_tdc %>% select(aduana, institucion, impuesto, rec_mes_25, rec_m24, pd_lw, pd_sem_22, dif_lw, dif_tm, dif_s22, var_tm, 
                                                   var_24, var_22, acum_25, acum_24, acum_22, dif_24, dif_22, var_acum_24, var_acum_22, 
