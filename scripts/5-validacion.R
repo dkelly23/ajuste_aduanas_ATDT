@@ -72,3 +72,14 @@ plot_25 <- df_real |>
 par(mar=c(2,2,1,1))
 plot(plot_24$n, plot_24$recaudacion, t="l", col="#235b4e", lwd=2)
 lines(plot_25$n, plot_25$recaudacion, t="l", col="#9f2241", lwd=2)
+
+
+# SEGUNDA PARTE ----------------------------------------------------------------
+rm(list=ls())
+load('output/real/base_segunda_parte_real.Rdata')
+load('output/nominal/base_segunda_parte.Rdata')
+load('output/tdc/base_segunda_parte_tdc.Rdata')
+
+tabla_aduanas_2p_tdc[,c(1, 16, 17, 19, 21)] |> view()
+tabla_aduanas_2p_real[,c(1, 16, 17, 19, 21)] |> view()
+tabla_aduanas_2p[,c(1, 16, 17, 19, 21)] |> view()

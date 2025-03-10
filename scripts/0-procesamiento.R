@@ -315,7 +315,7 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2025, month(uf), 1, sep = '-'))) %>% 
     group_by(aduana, impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_25_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))) %>% 
+    mutate(prom_mes_25_uf = recaudacion/round(as.numeric(difftime(uf,as.Date(paste(year(uf),month(uf),"01",sep="-")),units='days')+1))) %>% 
     mutate(rec_mes_25=recaudacion) |> 
     select(-recaudacion)
   
@@ -325,8 +325,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2024, month(uf), 1, sep = '-'))) %>% 
     group_by(aduana, impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_24_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_24_uf = recaudacion/days_in_month(month(uf-years(1)))) %>% 
+    select(-recaudacion)
   
   # 2023
   prom_mes_23 <- panel_rec_aduanas %>% ungroup() %>% filter(year(fecha) == 2023) %>% 
@@ -334,8 +334,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2023, month(uf), 1, sep = '-'))) %>% 
     group_by(aduana, impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_23_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_23_uf = recaudacion/days_in_month(month(uf-years(2)))) |> 
+    select(-recaudacion)
   
   # 2022
   prom_mes_22 <- panel_rec_aduanas %>% ungroup() %>% filter(year(fecha) == 2022) %>% 
@@ -343,8 +343,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2022, month(uf), 1, sep = '-'))) %>% 
     group_by(aduana, impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_22_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_22_uf = recaudacion/days_in_month(month(uf-years(2)))) %>% 
+    select(-recaudacion)
   
   
   ### Tabla ----------------------------------------------------------------------
@@ -810,8 +810,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2025, month(uf), 1, sep = '-'))) %>% 
     group_by(impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_25_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))) |> 
-    mutate(rec_mes_25=recaudacion) |>
+    mutate(prom_mes_25_uf = recaudacion/round(as.numeric(difftime(uf,as.Date(paste(year(uf),month(uf),"01",sep="-")),units='days')+1))) %>% 
+    mutate(rec_mes_25=recaudacion) |> 
     select(-recaudacion)
   
   # 2024
@@ -820,8 +820,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2024, month(uf), 1, sep = '-'))) %>% 
     group_by(impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_24_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_24_uf = recaudacion/days_in_month(month(uf-years(1)))) %>% 
+    select(-recaudacion)
   
   # 2023
   prom_mes_23 <- panel_rec_aduanas %>% ungroup() %>% filter(year(fecha) == 2023) %>% 
@@ -829,8 +829,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2023, month(uf), 1, sep = '-'))) %>% 
     group_by(impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_23_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_23_uf = recaudacion/days_in_month(month(uf-years(2)))) |> 
+    select(-recaudacion)
   
   # 2022
   prom_mes_22 <- panel_rec_aduanas %>% ungroup() %>% filter(year(fecha) == 2022) %>% 
@@ -838,8 +838,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2022, month(uf), 1, sep = '-'))) %>% 
     group_by(impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_22_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_22_uf = recaudacion/days_in_month(month(uf-years(2)))) %>% 
+    select(-recaudacion)
   
   
   ### Tabla ----------------------------------------------------------------------
@@ -1295,8 +1295,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2025, month(uf), 1, sep = '-'))) %>% 
     group_by(institucion, impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_25_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))) %>% 
-    mutate(rec_mes_25=recaudacion) |>
+    mutate(prom_mes_25_uf = recaudacion/round(as.numeric(difftime(uf,as.Date(paste(year(uf),month(uf),"01",sep="-")),units='days')+1))) %>% 
+    mutate(rec_mes_25=recaudacion) |> 
     select(-recaudacion)
   
   # 2024
@@ -1305,8 +1305,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2024, month(uf), 1, sep = '-'))) %>% 
     group_by(institucion, impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_24_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_24_uf = recaudacion/days_in_month(month(uf-years(1)))) %>% 
+    select(-recaudacion)
   
   # 2023
   prom_mes_23 <- panel_rec_aduanas %>% ungroup() %>% filter(year(fecha) == 2023) %>% 
@@ -1314,8 +1314,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2023, month(uf), 1, sep = '-'))) %>% 
     group_by(institucion, impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_23_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_23_uf = recaudacion/days_in_month(month(uf-years(2)))) |> 
+    select(-recaudacion)
   
   # 2022
   prom_mes_22 <- panel_rec_aduanas %>% ungroup() %>% filter(year(fecha) == 2022) %>% 
@@ -1323,8 +1323,8 @@ procesar_bases <- function(tipo="aduanas", ajuste=NA, last.date=last.date) {
     filter(fecha== as.Date(paste(2022, month(uf), 1, sep = '-'))) %>% 
     group_by(institucion, impuesto) %>% 
     summarise(recaudacion = sum(recaudacion)) %>% 
-    mutate(prom_mes_22_uf = recaudacion/round(as.numeric(difftime(uf, '2025-02-01',units = 'days')+1))
-    ) %>% select(-recaudacion)
+    mutate(prom_mes_22_uf = recaudacion/days_in_month(month(uf-years(2)))) %>% 
+    select(-recaudacion)
   
   
   ### Tabla ----------------------------------------------------------------------

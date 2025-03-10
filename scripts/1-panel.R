@@ -22,7 +22,7 @@ pacman::p_load(tidyverse, readxl, showtext, janitor, zoo)
 
 # Manually set date
 # last.date <- as.Date("2025-02-27")
-last.date <- Sys.Date()-days(1)
+last.date <- Sys.Date()-days(2)
 
 # Read cat_aduanas
 cat_aduanas <- read_csv("input/cat_aduanas.csv")
